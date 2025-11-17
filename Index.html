@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Multi-Personalidade | Interface Profissional</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .personality-selector {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .personality-selector h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 10px;
+        }
+
+        .personality-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .personality-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .personality-option:hover {
+            background-color: var(--light-color);
+        }
+
+        .personality-option.active {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .personality-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .personality-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .personality-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .chat-interface {
+            flex: 2;
+            min-width: 500px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .current-personality {
+            display: flex;
+            align-items: center;
+        }
+
+        .current-personality-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: var(--secondary-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .chat-input input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .chat-input button {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-input button:hover {
+            background: var(--primary-color);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .personality-selector, .chat-interface {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>IA Multi-Personalidade</h1>
+            <p>Interaja com diferentes personalidades de IA especializadas em diversas áreas</p>
+        </header>
+
+        <div class="main-content">
+            <div class="personality-selector">
+                <h2>Selecione uma Personalidade</h2>
+                <div class="personality-options">
+                    <div class="personality-option active" data-personality="assistant">
+                        <div class="personality-icon" style="background-color: #3498db;">
+                            <i>👨‍💼</i>
+                        </div>
+                        <div class="personality-info">
+                            <h3>Assistente Pessoal</h3>
+                            <p>Organização, produtividade e suporte geral</p>
+                        </div>
+                    </div>
+                    <div class="personality-option" data-personality="creative">
+                        <div class="personality-icon" style="background-color: #9b59b6;">
+                            <i>🎨</i>
+                        </div>
+                        <div class="personality-info">
+                            <h3>Creative Mind</h3>
+                            <p>Ideias criativas, brainstorming e inspiração</p>
+                        </div>
+                    </div>
+                    <div class="personality-option" data-personality="analyst">
+                        <div class="personality-icon" style="background-color: #2ecc71;">
+                            <i>📊</i>
+                        </div>
+                        <div class="personality-info">
+                            <h3>Analista de Dados</h3>
+                            <p>Análise, lógica e tomada de decisões</p>
+                        </div>
+                    </div>
+                    <div class="personality-option" data-personality="coach">
+                        <div class="personality-icon" style="background-color: #e74c3c;">
+                            <i>💪</i>
+                        </div>
+                        <div class="personality-info">
+                            <h3>Coach Motivacional</h3>
+                            <p>Motivação, desenvolvimento pessoal e metas</p>
+                        </div>
+                    </div>
+                    <div class="personality-option" data-personality="tech">
+                        <div class="personality-icon" style="background-color: #f39c12;">
+                            <i>🔧</i>
+                        </div>
+                        <div class="personality-info">
+                            <h3>Especialista em TI</h3>
+                            <p>Tecnologia, programação e soluções técnicas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-interface">
+                <div class="chat-header">
+                    <div class="current-personality">
+                        <div class="current-personality-icon" style="background-color: #3498db;">
+                            <i>👨‍💼</i>
+                        </div>
+                        <div>
+                            <h3>Assistente Pessoal</h3>
+                            <p>Online - Pronto para ajudar</p>
+                        </div>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>Conectado</span>
+                    </div>
+                </div>
+                <div class="chat-messages">
+                    <div class="message ai">
+                        Olá! Sou seu Assistente Pessoal. Como posso ajudá-lo hoje? Posso auxiliar com organização, produtividade e muito mais.
+                        <div class="message-time">10:00</div>
+                    </div>
+                    <div class="message user">
+                        Preciso de ajuda para organizar minha semana.
+                        <div class="message-time">10:01</div>
+                    </div>
+                    <div class="message ai">
+                        Claro! Vamos começar criando uma lista de prioridades. Quais são suas principais tarefas para esta semana?
+                        <div class="message-time">10:01</div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" placeholder="Digite sua mensagem..." id="user-input">
+                    <button id="send-btn">
+                        <i>➤</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>IA Multi-Personalidade &copy; 2023 - Interface profissional para interação com diferentes personalidades de IA</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos da interface
+            const personalityOptions = document.querySelectorAll('.personality-option');
+            const currentPersonalityIcon = document.querySelector('.current-personality-icon');
+            const currentPersonalityName = document.querySelector('.current-personality h3');
+            const currentPersonalityStatus = document.querySelector('.current-personality p');
+            const chatMessages = document.querySelector('.chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+
+            // Personalidades disponíveis
+            const personalities = {
+                assistant: {
+                    name: 'Assistente Pessoal',
+                    icon: '👨‍💼',
+                    color: '#3498db',
+                    greeting: 'Olá! Sou seu Assistente Pessoal. Como posso ajudá-lo hoje? Posso auxiliar com organização, produtividade e muito mais.'
+                },
+                creative: {
+                    name: 'Creative Mind',
+                    icon: '🎨',
+                    color: '#9b59b6',
+                    greeting: 'Olá! Sou o Creative Mind. Vamos explorar ideias criativas, fazer brainstorming e encontrar inspiração juntos!'
+                },
+                analyst: {
+                    name: 'Analista de Dados',
+                    icon: '📊',
+                    color: '#2ecc71',
+                    greeting: 'Olá! Sou seu Analista de Dados. Posso ajudá-lo com análise de informações, lógica e tomada de decisões baseadas em dados.'
+                },
+                coach: {
+                    name: 'Coach Motivacional',
+                    icon: '💪',
+                    color: '#e74c3c',
+                    greeting: 'Olá! Sou seu Coach Motivacional. Vamos trabalhar juntos para alcançar seus objetivos e desenvolver todo o seu potencial!'
+                },
+                tech: {
+                    name: 'Especialista em TI',
+                    icon: '🔧',
+                    color: '#f39c12',
+                    greeting: 'Olá! Sou seu Especialista em TI. Posso ajudá-lo com questões técnicas, programação e soluções tecnológicas.'
+                }
+            };
+
+            // Respostas pré-definidas para cada personalidade
+            const personalityResponses = {
+                assistant: [
+                    "Vou ajudar você a organizar isso. Vamos criar um plano passo a passo.",
+                    "Que tal estabelecermos algumas metas claras para esse projeto?",
+                    "Posso sugerir algumas ferramentas que podem facilitar essa tarefa.",
+                    "Vamos priorizar suas atividades para otimizar seu tempo."
+                ],
+                creative: [
+                    "Que ideia interessante! Vamos explorar mais essa possibilidade.",
+                    "E se tentássemos uma abordagem completamente diferente?",
+                    "Isso me lembra de um conceito artístico que poderia ser aplicado aqui.",
+                    "Vamos fazer um exercício de brainstorming para gerar mais ideias."
+                ],
+                analyst: [
+                    "Vamos analisar os dados disponíveis para tomar uma decisão informada.",
+                    "Com base nas informações, posso identificar alguns padrões interessantes.",
+                    "Recomendo uma abordagem sistemática para resolver esse problema.",
+                    "Vamos examinar as variáveis envolvidas nessa situação."
+                ],
+                coach: [
+                    "Você tem todo o potencial necessário para alcançar esse objetivo!",
+                    "Vamos estabelecer metas realistas e um plano para alcançá-las.",
+                    "Lembre-se: cada pequeno progresso é uma vitória.",
+                    "Que estratégias você já tentou? Vamos explorar novas abordagens."
+                ],
+                tech: [
+                    "Do ponto de vista técnico, existem algumas soluções possíveis.",
+                    "Vamos analisar a arquitetura necessária para implementar isso.",
+                    "Posso recomendar algumas ferramentas e frameworks adequados.",
+                    "Vamos abordar esse problema de forma sistemática."
+                ]
+            };
+
+            // Personalidade atual
+            let currentPersonality = 'assistant';
+
+            // Função para mudar a personalidade
+            function changePersonality(personalityId) {
+                // Atualizar a personalidade atual
+                currentPersonality = personalityId;
+                
+                // Atualizar a interface
+                const personality = personalities[personalityId];
+                currentPersonalityIcon.innerHTML = `<i>${personality.icon}</i>`;
+                currentPersonalityIcon.style.backgroundColor = personality.color;
+                currentPersonalityName.textContent = personality.name;
+                currentPersonalityStatus.textContent = 'Online - Pronto para ajudar';
+                
+                // Limpar mensagens anteriores
+                chatMessages.innerHTML = '';
+                
+                // Adicionar mensagem de saudação da nova personalidade
+                addMessage('ai', personality.greeting);
+                
+                // Atualizar a seleção visual
+                personalityOptions.forEach(option => {
+                    if (option.dataset.personality === personalityId) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+
+            // Função para adicionar mensagem ao chat
+            function addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', sender);
+                
+                const time = new Date();
+                const timeString = `${time.getHours()}:${time.getMinutes().toString().padStart(2, '0')}`;
+                
+                messageDiv.innerHTML = `
+                    ${text}
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Função para obter resposta da IA
+            function getAIResponse(userMessage) {
+                const responses = personalityResponses[currentPersonality];
+                const randomIndex = Math.floor(Math.random() * responses.length);
+                return responses[randomIndex];
+            }
+
+            // Função para enviar mensagem
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Adicionar mensagem do usuário
+                addMessage('user', message);
+                
+                // Limpar campo de entrada
+                userInput.value = '';
+                
+                // Simular processamento
+                setTimeout(() => {
+                    // Adicionar resposta da IA
+                    const response = getAIResponse(message);
+                    addMessage('ai', response);
+                }, 1000);
+            }
+
+            // Event listeners
+            personalityOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    changePersonality(this.dataset.personality);
+                });
+            });
+
+            sendBtn.addEventListener('click', sendMessage);
+
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Inicializar com a personalidade padrão
+            changePersonality('assistant');
+        });
+    </script>
+</body>
+</html>
